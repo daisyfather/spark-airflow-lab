@@ -1,0 +1,10 @@
+data/*
+!data/.gitkeep
+__pycache__/
+*.pyc
+.venv/
+spark-warehouse/
+metastore_db/
+*.crc
+_SUCCESS
+.ipynb_checkpoints/
