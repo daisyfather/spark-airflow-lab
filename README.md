@@ -1,4 +1,4 @@
-# de-lab — Spark & Airflow cho Data Engineer (12 tuần)
+# spark-airflow-lab — Spark & Airflow cho Data Engineer (12 tuần)
 
 Repo thực hành cá nhân. Mục tiêu: lấp khoảng trống Spark/distributed processing
 và nâng Airflow từ mức "viết được DAG" lên mức vận hành production.
