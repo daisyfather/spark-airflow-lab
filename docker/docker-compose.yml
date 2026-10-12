@@ -1,3 +1,11 @@
+# Image chính thức của Apache Spark (không dùng bitnami — đã ngừng bản miễn phí)
+x-spark-common: &spark-common
+  image: apache/spark:3.5.3
+  user: root
+  volumes:
+    - ../spark:/opt/work
+    - ../data:/opt/data
+
 services:
   # ---- Nguồn dữ liệu giả lập (đóng vai Oracle trong bài thực hành) ----
   postgres:
@@ -14,43 +22,29 @@ services:
 
   # ---- Spark cluster: 1 master + 2 worker ----
   spark-master:
-    image: bitnami/spark:3.5
+    <<: *spark-common
     container_name: delab-spark-master
-    environment:
-      SPARK_MODE: master
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master --host spark-master
     ports:
       - "8080:8080"   # Master UI
       - "7077:7077"   # Cổng submit job
-      - "4040:4040"   # Application UI (job đang chạy)
-    volumes:
-      - ../spark:/opt/work
-      - ../data:/opt/data
+      - "4040:4040"   # Application UI (khi job chạy, driver đặt ở master)
 
   spark-worker-1:
-    image: bitnami/spark:3.5
+    <<: *spark-common
     container_name: delab-spark-worker-1
     depends_on: [spark-master]
-    environment:
-      SPARK_MODE: worker
-      SPARK_MASTER_URL: spark://spark-master:7077
-      SPARK_WORKER_CORES: "2"
-      SPARK_WORKER_MEMORY: "2G"
-    volumes:
-      - ../spark:/opt/work
-      - ../data:/opt/data
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077 --cores 2 --memory 2G
+    ports:
+      - "8081:8081"   # Worker 1 UI
 
   spark-worker-2:
-    image: bitnami/spark:3.5
+    <<: *spark-common
     container_name: delab-spark-worker-2
     depends_on: [spark-master]
-    environment:
-      SPARK_MODE: worker
-      SPARK_MASTER_URL: spark://spark-master:7077
-      SPARK_WORKER_CORES: "2"
-      SPARK_WORKER_MEMORY: "2G"
-    volumes:
-      - ../spark:/opt/work
-      - ../data:/opt/data
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077 --cores 2 --memory 2G
+    ports:
+      - "8082:8081"   # Worker 2 UI
 
 volumes:
   pgdata:
