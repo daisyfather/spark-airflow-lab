@@ -1,4 +1,4 @@
-# spark-airflow-lab — Spark & Airflow cho Data Engineer (12 tuần)
+# spark-airflow-lab: Spark & Airflow cho Data Engineer (12 tuần)
 
 Repo thực hành cá nhân. Mục tiêu: lấp khoảng trống Spark/distributed processing
 và nâng Airflow từ mức "viết được DAG" lên mức vận hành production.
@@ -9,7 +9,7 @@ và nâng Airflow từ mức "viết được DAG" lên mức vận hành produc
 docker/        docker-compose cho Spark, Postgres (giả lập nguồn), Airflow
 spark/         bài thực hành theo tuần (week01 ... week07)
 airflow/dags/  DAG thực hành (tuần 08-10)
-notes/         ghi chú mỗi tuần — 1 file / 1 khái niệm, viết bằng lời của mình
+notes/         ghi chú theo khái niệm, mỗi khái niệm 1 file
 data/          dữ liệu sinh ra để test (không commit file lớn)
 ```
 
@@ -42,7 +42,13 @@ docker compose up -d
 
 ## Quy ước ghi chú
 
-Mỗi khái niệm học xong viết 1 file trong `notes/`, trả lời 3 câu:
+Mỗi khái niệm học xong viết 1 file trong `notes/`, theo khung [`notes/_TEMPLATE.md`](notes/_TEMPLATE.md).
+Mục lục và trạng thái từng khái niệm ở [`notes/README.md`](notes/README.md).
+
+Khung tài liệu luôn trả lời đủ ba câu:
 1. Khái niệm này giải quyết vấn đề gì?
 2. Ở hệ thống hiện tại (Oracle/ODI/OAS) thứ tương đương là gì?
 3. Khi nào nó hỏng / dùng sai?
+
+Con số nào ghi trong tài liệu phải chạy thử bằng script trong `spark/weekNN/`, hoặc ghi rõ là
+chưa kiểm chứng.
