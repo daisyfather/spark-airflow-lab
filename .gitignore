@@ -8,3 +8,5 @@ metastore_db/
 *.crc
 _SUCCESS
 .ipynb_checkpoints/
+derby.log
+cases/scripts/_out_*/

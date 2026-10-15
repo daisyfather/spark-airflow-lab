@@ -11,7 +11,7 @@ Học theo đúng thứ tự, khái niệm sau xây trên khái niệm trước.
 | # | Khái niệm | Câu để nhớ | Trạng thái |
 |---|---|---|---|
 | 0 | [Vì sao cần xử lý phân tán](00-vi-sao-xu-ly-phan-tan.md) | Nhiều máy thì nhanh hơn, nhưng dữ liệu đi lại giữa các máy rất đắt | Đã kiểm chứng |
-| 1 | [Partition](01-partition.md) | 1 partition = 1 task = 1 core | Đã kiểm chứng (trừ phần JDBC) |
+| 1 | [Partition](01-partition.md) | 1 partition = 1 task = 1 core | Đã kiểm chứng |
 | 2 | Driver và executor | | Chưa học |
 | 3 | Transformation, action, lazy evaluation | | Chưa học |
 | 4 | Shuffle | | Chưa học |
@@ -21,7 +21,8 @@ Học theo đúng thứ tự, khái niệm sau xây trên khái niệm trước.
 
 1. Đọc câu để nhớ ở đầu file. Nếu tự giải thích được câu đó thì chuyển sang mục 7 làm bài tự kiểm tra.
 2. Trả lời không được thì đọc lại mục 2 (cơ chế) và mục 3 (liên hệ Oracle).
-3. Mục 5 dùng khi gặp lỗi thật: tra triệu chứng trước, rồi mới đọc nguyên nhân.
+3. Mục 5 dùng khi gặp lỗi thật: tra triệu chứng trước, rồi mới đọc nguyên nhân. Cột cuối trỏ sang
+   biên bản sự cố tương ứng trong [`cases/`](../cases/README.md).
 
 ## Môi trường kiểm chứng
 

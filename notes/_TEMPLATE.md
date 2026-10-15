@@ -29,8 +29,10 @@ Ghi rõ con số nào đã chạy kiểm chứng, con số nào chỉ lấy từ
 
 ## 5. Dấu hiệu hỏng và cách xử lý
 
-| Triệu chứng | Nguyên nhân | Hướng xử lý |
-|---|---|---|
+| Triệu chứng | Nguyên nhân | Hướng xử lý | Ca thực tế |
+|---|---|---|---|
+
+Cột cuối trỏ sang biên bản trong `cases/` nếu có.
 
 ## 6. Kiểm chứng thực tế
 

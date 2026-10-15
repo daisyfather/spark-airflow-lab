@@ -1,6 +1,6 @@
 # Khái niệm 1: Partition
 
-> Phiên bản kiểm chứng: Spark 3.5.3 (`local[4]`) · Học ngày: 13–14/10/2026 · Trạng thái: đã kiểm chứng, trừ phần JDBC
+> Phiên bản kiểm chứng: Spark 3.5.3 (`local[4]`) · Học ngày: 13–14/10/2026 · Trạng thái: đã kiểm chứng (JDBC kiểm chứng qua Apache Derby, xem ca 01–03)
 > Khái niệm trước: [0. Vì sao cần xử lý phân tán](00-vi-sao-xu-ly-phan-tan.md) · Khái niệm sau: 2. Driver và executor
 
 **Một câu để nhớ:** 1 partition = 1 task = 1 core. Chia ít quá thì core ngồi chơi, chia nhiều quá thì tốn công chia việc hơn làm việc.
@@ -134,8 +134,8 @@ dịch) hoặc cột ngày nghiệp vụ.
 | `spark.sql.adaptive.coalescePartitions.enabled` | true | AQE gộp partition nhỏ sau shuffle | Đã chạy |
 | `spark.sql.adaptive.advisoryPartitionSizeInBytes` | 64MB | Kích thước mục tiêu khi AQE gộp hoặc tách partition | Đã chạy |
 | `spark.default.parallelism` | tổng số core | Số partition mặc định cho thao tác RDD | Đã chạy (ra 4) |
-| JDBC `numPartitions` | không có (đọc thành 1 partition) | Số partition, đồng thời là số kết nối tối đa tới DB | Chưa chạy |
-| JDBC `fetchsize` | theo driver (Oracle: 10 dòng) | Số dòng lấy mỗi lần gọi DB | Chưa chạy |
+| JDBC `numPartitions` | không có (đọc thành 1 partition) | Số partition, đồng thời là số kết nối tối đa tới DB | Đã chạy (Derby, [ca 01](../cases/01-jdbc-doc-oracle-chi-mot-task.md), [ca 02](../cases/02-jdbc-qua-nhieu-ket-noi.md)) |
+| JDBC `fetchsize` | theo driver (Oracle: 10 dòng) | Số dòng lấy mỗi lần gọi DB | Theo tài liệu hãng, chưa chạy trên Oracle |
 
 Lưu ý `numPartitions` cũng là số kết nối đồng thời mở vào database nguồn. Đặt 50 là 50 session
 cùng đập vào Oracle production. Phải hỏi DBA trước khi đặt số lớn.
@@ -145,14 +145,15 @@ nhắc thẳng trường hợp Oracle. Thường đặt vài nghìn.
 
 ## 5. Dấu hiệu hỏng và cách xử lý
 
-| Triệu chứng | Nguyên nhân hay gặp | Hướng xử lý |
-|---|---|---|
-| Đọc từ Oracle/Postgres rất chậm, Spark UI thấy đúng 1 task chạy | JDBC không khai báo partitionColumn | Thêm 4 option partition, tăng `fetchsize` |
-| Đọc JDBC đã chia nhiều partition nhưng một task chạy mãi | `lowerBound`/`upperBound` lệch xa dữ liệu thật, dồn dòng vào partition đầu/cuối | Lấy min/max thật của cột trước rồi mới đặt bound |
-| Một task chạy lâu gấp nhiều lần các task khác cùng stage | Skew: partition chênh nhau quá nhiều | Học kỹ ở tuần 5 (join strategies, data skew) |
-| Executor lỗi OutOfMemory dù tổng dữ liệu không lớn | Partition quá to, một task phải ôm quá nhiều | Tăng số partition để mỗi task nhỏ lại |
-| Stage có hàng nghìn task, mỗi task vài mili giây | Partition quá nhỏ, hay gặp sau shuffle khi AQE tắt | Bật AQE hoặc giảm `spark.sql.shuffle.partitions` |
-| Ghi ra hàng nghìn file nhỏ | Mỗi partition ghi ra ít nhất một file | Gộp bớt partition trước khi ghi (học ở tuần 7) |
+| Triệu chứng | Nguyên nhân hay gặp | Hướng xử lý | Ca thực tế |
+|---|---|---|---|
+| Đọc từ Oracle/Postgres rất chậm, Spark UI thấy đúng 1 task chạy | JDBC không khai báo partitionColumn | Thêm 4 option partition, tăng `fetchsize` | [Ca 01](../cases/01-jdbc-doc-oracle-chi-mot-task.md) |
+| Đọc JDBC song song xong thì database nguồn quá tải | `numPartitions` quá lớn, mỗi partition là một kết nối | Thống nhất số kết nối với DBA, `repartition` sau khi đọc | [Ca 02](../cases/02-jdbc-qua-nhieu-ket-noi.md) |
+| Đọc JDBC đã chia nhiều partition nhưng một task chạy mãi | `lowerBound`/`upperBound` lệch xa dữ liệu thật, dồn dòng vào partition đầu/cuối | Lấy min/max thật của cột trước rồi mới đặt bound | [Ca 03](../cases/03-jdbc-bound-lech.md) |
+| Một task chạy lâu gấp nhiều lần các task khác cùng stage | Skew: partition chênh nhau quá nhiều | Tìm khóa gây lệch, học kỹ ở tuần 5 | [Ca 06](../cases/06-skew-khach-hang-lon.md) |
+| Executor lỗi OutOfMemory dù tổng dữ liệu không lớn | Partition quá to, một task phải ôm quá nhiều | Tăng số partition để mỗi task nhỏ lại | [Ca 03](../cases/03-jdbc-bound-lech.md), [Ca 06](../cases/06-skew-khach-hang-lon.md) |
+| Stage có hàng trăm task, mỗi task vài mili giây | Partition quá nhỏ, hay gặp sau shuffle khi AQE tắt | Bật AQE hoặc giảm `spark.sql.shuffle.partitions` | [Ca 05](../cases/05-qua-nhieu-file-nho.md) |
+| Ghi ra hàng trăm, hàng nghìn file nhỏ | Mỗi partition có dữ liệu ghi ra ít nhất một file | Gộp bớt partition trước khi ghi (học ở tuần 7) | [Ca 05](../cases/05-qua-nhieu-file-nho.md) |
 
 Mục "Executor lỗi OutOfMemory" có trong tài liệu hãng: lỗi nhiều khi không phải do dữ liệu không
 vừa bộ nhớ, mà do phần việc của một task quá lớn. Cách sửa đơn giản nhất là tăng số partition.
@@ -190,16 +191,19 @@ Nhận xét:
 - Tắt AQE thì groupBy luôn ra 200 partition, dù kết quả chỉ 1.000 dòng. 200 task cho 1.000 dòng
   là phí. Bật AQE thì Spark gộp lại còn 1.
 
-Phần JDBC chưa chạy được trong môi trường soạn tài liệu (không tải được driver). Bài tập tự làm
-ở nhà, trên cụm Docker có Postgres:
+Phần JDBC kiểm chứng bằng Apache Derby (database nhúng có sẵn trong PySpark, đóng vai Oracle),
+chi tiết trong ba ca thực tế:
 
-1. Tạo bảng 1 triệu dòng trong Postgres.
-2. Đọc không khai báo gì, in `df.rdd.getNumPartitions()`. Dự đoán: 1.
-3. Đọc lại với `partitionColumn="id"`, `lowerBound=1`, `upperBound=1000000`, `numPartitions=8`.
-   Dự đoán: 8.
-4. Đặt `upperBound=100` rồi đếm số dòng trong từng partition
-   (`df.groupBy(F.spark_partition_id()).count()`). Dự đoán: tổng vẫn đủ 1 triệu, nhưng gần như
-   tất cả dồn vào partition cuối.
+- [Ca 01](../cases/01-jdbc-doc-oracle-chi-mot-task.md): không khai báo gì ra đúng 1 partition
+  (500.000 dòng dồn một chỗ); khai báo đủ 4 option ra 8 partition đều nhau. `explain()` in thẳng
+  `Scan JDBCRelation(...) [numPartitions=1]`.
+- [Ca 02](../cases/02-jdbc-qua-nhieu-ket-noi.md): `numPartitions=64` mở đúng 64 kết nối vào
+  database, nhưng cùng lúc chỉ chạy tối đa bằng số core.
+- [Ca 03](../cases/03-jdbc-bound-lech.md): bound 1–50.000 trên dữ liệu 1–500.000 thì partition
+  cuối ôm 455.004 dòng, tổng vẫn đủ 500.000. Kèm 10 câu WHERE thật Spark sinh ra.
+
+Chưa kiểm chứng: mức chậm thực tế của `fetchsize` mặc định trên Oracle. Làm bài này khi có quyền
+đọc một bảng Oracle thật ở môi trường test.
 
 ## 7. Tự kiểm tra
 

@@ -10,6 +10,7 @@ docker/        docker-compose cho Spark, Postgres (giả lập nguồn), Airflow
 spark/         bài thực hành theo tuần (week01 ... week07)
 airflow/dags/  DAG thực hành (tuần 08-10)
 notes/         ghi chú theo khái niệm, mỗi khái niệm 1 file
+cases/         biên bản sự cố thực tế, mỗi ca trỏ về note liên quan, kèm script tái hiện
 data/          dữ liệu sinh ra để test (không commit file lớn)
 ```
 

@@ -120,12 +120,13 @@ Khái niệm này chưa cần thuộc cấu hình. Chỉ cần một con số: s
 
 ## 5. Dấu hiệu hỏng và cách xử lý
 
-| Triệu chứng | Nguyên nhân hay gặp | Hướng xử lý |
-|---|---|---|
-| Driver chết vì hết bộ nhớ (OutOfMemory) | Gọi `collect()` hoặc `toPandas()` trên dữ liệu lớn, kéo hết về driver | Ghi kết quả ra file/bảng, chỉ `collect()` khi chắc kết quả nhỏ |
-| Job dừng rất lâu ở một bước có `Exchange` | Shuffle nhiều dữ liệu | Lọc và chọn bớt cột trước khi groupBy/join, để ít dữ liệu đi qua mạng hơn |
-| Hầu hết task xong nhanh, vài task chạy mãi | Data skew, có straggler | Học ở tuần 5 |
-| Đĩa của worker đầy dần khi job chạy lâu | File trung gian của shuffle | Theo dõi thư mục `spark.local.dir` |
+| Triệu chứng | Nguyên nhân hay gặp | Hướng xử lý | Ca thực tế |
+|---|---|---|---|
+| Driver chết vì hết bộ nhớ, executor vẫn khỏe | Gọi `collect()` hoặc `toPandas()` trên dữ liệu lớn, kéo hết về driver | Tổng hợp trên cụm, hoặc ghi kết quả ra file/bảng; chỉ `collect()` khi chắc kết quả nhỏ | [Ca 04](../cases/04-driver-het-bo-nho.md) |
+| Job dừng rất lâu ở một bước có `Exchange` | Shuffle nhiều dữ liệu | Lọc và chọn bớt cột trước khi groupBy/join, để ít dữ liệu đi qua mạng hơn | |
+| Hầu hết task xong nhanh, vài task chạy mãi | Data skew, có straggler | Tìm khóa gây lệch; phép không gom tạm được (window, join) thì đặc biệt cẩn thận | [Ca 03](../cases/03-jdbc-bound-lech.md), [Ca 06](../cases/06-skew-khach-hang-lon.md) |
+| Cùng dữ liệu, job tính tổng chạy ổn còn job window/join thì chậm | Partial aggregation cứu job tính tổng, job window không gom tạm được | Xem ca 06 | [Ca 06](../cases/06-skew-khach-hang-lon.md) |
+| Đĩa của worker đầy dần khi job chạy lâu | File trung gian của shuffle | Theo dõi thư mục `spark.local.dir` | |
 
 ## 6. Kiểm chứng thực tế
 
