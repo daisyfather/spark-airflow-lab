@@ -9,7 +9,7 @@ và nâng Airflow từ mức "viết được DAG" lên mức vận hành produc
 docker/        docker-compose cho Spark, Postgres (giả lập nguồn), Airflow
 spark/         bài thực hành theo tuần (week01 ... week07)
 airflow/dags/  DAG thực hành (tuần 08-10)
-notes/         ghi chú theo khái niệm, mỗi khái niệm 1 file
+notes/         ghi chú theo khái niệm, mỗi khái niệm 1 file; thuật ngữ ở notes/thuat-ngu.md
 cases/         biên bản sự cố thực tế, mỗi ca trỏ về note liên quan, kèm script tái hiện
 data/          dữ liệu sinh ra để test (không commit file lớn)
 ```
@@ -50,6 +50,9 @@ Khung tài liệu luôn trả lời đủ ba câu:
 1. Khái niệm này giải quyết vấn đề gì?
 2. Ở hệ thống hiện tại (Oracle/ODI/OAS) thứ tương đương là gì?
 3. Khi nào nó hỏng / dùng sai?
+
+Học xong khái niệm nào thì cập nhật [`notes/thuat-ngu.md`](notes/thuat-ngu.md): trạng thái, link về note
+và ca liên quan.
 
 Con số nào ghi trong tài liệu phải chạy thử bằng script trong `spark/weekNN/`, hoặc ghi rõ là
 chưa kiểm chứng.

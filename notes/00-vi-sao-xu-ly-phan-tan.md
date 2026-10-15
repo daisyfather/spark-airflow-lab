@@ -159,8 +159,10 @@ Nhận xét:
 - `hashpartitioning(ma_kh, 200)` chính là "quy tắc mã đuôi" trong ví dụ phòng tín dụng: Spark băm
   mã khách hàng ra một con số, rồi lấy số đó chia lấy dư cho 200 để biết khách nào về partition
   nào. Con số 200 là `spark.sql.shuffle.partitions`.
-- Số `*(1)` và `*(2)` đánh dấu hai giai đoạn (stage), ranh giới giữa chúng chính là `Exchange`.
-  Khái niệm 5 sẽ học kỹ phần này.
+- Dấu `*(1)` và `*(2)` là mã của hai khối mã Spark tự sinh để chạy gộp các bước liền nhau
+  (whole-stage codegen), không phải số stage. Ở đây ranh giới hai khối trùng với `Exchange`, cũng là
+  ranh giới stage, nên dễ tưởng là một. Nhưng con số không khớp với số stage trên Spark UI.
+  Xem [thuật ngữ](thuat-ngu.md#whole-stage-codegen-n); stage học ở khái niệm 5.
 
 Từ giờ, mỗi khi thấy `Exchange` trong kế hoạch thực thi, hãy hiểu là có shuffle và đó là chỗ đắt.
 
@@ -224,6 +226,8 @@ toàn bộ các dòng chi tiết, nên dữ liệu đi qua mạng ít hơn nhi�
 
 `scale up` · `scale out` · `partial aggregation` · `shuffle` · `Exchange` · `data skew` ·
 `straggler` · `fault tolerance` · `driver` · `collect()`
+
+Giải thích từng chữ, chỗ gặp và chữ dễ nhầm: [thuat-ngu.md](thuat-ngu.md).
 
 ## Nguồn
 

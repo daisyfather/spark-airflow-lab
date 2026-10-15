@@ -52,6 +52,8 @@ Câu hỏi để ôn. Đáp án gấp lại, tự trả lời xong mới mở.
 
 `...`
 
+Thuật ngữ mới trong bài phải có trong [thuat-ngu.md](thuat-ngu.md), kèm link về bài này.
+
 ## Nguồn
 
 - Tài liệu chính thức Apache Spark: ...

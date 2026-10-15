@@ -4,6 +4,12 @@ Mỗi khái niệm một file, viết theo cùng một khung ([_TEMPLATE.md](_TE
 nhanh và đưa cho người khác đọc được. Con số nào ghi trong tài liệu đều đã chạy thử,
 hoặc có ghi rõ là lấy từ tài liệu hãng nhưng chưa kiểm chứng.
 
+## Thuật ngữ
+
+[thuat-ngu.md](thuat-ngu.md): tra cứu mọi thuật ngữ Spark gặp trong notes, cases, Spark UI và
+`explain()`. Mỗi chữ có nghĩa, ví dụ, chỗ sẽ gặp, chữ dễ nhầm, và link về bài học. Đọc mục
+"Những cặp dễ nhầm" trước khi học tiếp, vì phần lớn hiểu sai đến từ đó.
+
 ## Phần nền tảng Spark
 
 Học theo đúng thứ tự, khái niệm sau xây trên khái niệm trước.
@@ -21,7 +27,8 @@ Học theo đúng thứ tự, khái niệm sau xây trên khái niệm trước.
 
 1. Đọc câu để nhớ ở đầu file. Nếu tự giải thích được câu đó thì chuyển sang mục 7 làm bài tự kiểm tra.
 2. Trả lời không được thì đọc lại mục 2 (cơ chế) và mục 3 (liên hệ Oracle).
-3. Mục 5 dùng khi gặp lỗi thật: tra triệu chứng trước, rồi mới đọc nguyên nhân. Cột cuối trỏ sang
+3. Gặp chữ lạ thì tra [thuat-ngu.md](thuat-ngu.md).
+4. Mục 5 dùng khi gặp lỗi thật: tra triệu chứng trước, rồi mới đọc nguyên nhân. Cột cuối trỏ sang
    biên bản sự cố tương ứng trong [`cases/`](../cases/README.md).
 
 ## Môi trường kiểm chứng

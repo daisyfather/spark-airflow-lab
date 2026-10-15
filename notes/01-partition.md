@@ -263,6 +263,8 @@ Có dư partition thì core xong trước nhận việc tiếp, tải được d
 `partition` · `task` · `core` · `maxPartitionBytes` · `openCostInBytes` · `shuffle.partitions` ·
 `AQE` · `partitionColumn` · `lowerBound/upperBound` · `numPartitions` · `fetchsize`
 
+Giải thích từng chữ, chỗ gặp và chữ dễ nhầm: [thuat-ngu.md](thuat-ngu.md).
+
 ## Nguồn
 
 - Apache Spark, *Performance Tuning* (Spark SQL): <https://spark.apache.org/docs/latest/sql-performance-tuning.html>

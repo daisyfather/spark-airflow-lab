@@ -11,6 +11,8 @@ rồi mới đọc tiếp. Sau đó chạy script tái hiện để tận mắt 
 > Gặp sự cố thật ở chỗ làm thì viết thêm theo [`_TEMPLATE.md`](_TEMPLATE.md), nhớ bỏ tên bảng,
 > tên hệ thống và dữ liệu thật.
 
+Gặp chữ lạ trong biên bản thì tra [bảng thuật ngữ](../notes/thuat-ngu.md).
+
 ## Danh mục
 
 | Ca | Triệu chứng | Khái niệm liên quan | Script |
